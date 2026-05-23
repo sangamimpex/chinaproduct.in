@@ -1,5 +1,5 @@
 async function getInquiries() {
-  const res = await fetch("https://chinaproduct.in/api/customers", {
+  const res = await fetch("https://chinaproduct.in/api/enquiries", {
     cache: "no-store",
   });
 
