@@ -1,50 +1,59 @@
 "use client";
 
-import { useState } from "react";
-
-async function getInquiries() {
-  const res = await fetch("https://chinaproduct.in/api/enquiries", {
-    cache: "no-store",
-  });
-
-  return res.json();
-}
+import { useEffect, useState } from "react";
 
 export default function AdminPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const [inquiries, setInquiries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const handleLogin = () => {
-    // 🔐 SET YOUR CREDENTIALS HERE
-    if (username === "sangamimpex" && password === "9419166095") {
+    if (username === "admin" && password === "9419166095") {
       setLoggedIn(true);
     } else {
       alert("Invalid username or password");
     }
   };
 
-  // 🔐 LOGIN SCREEN
+  useEffect(() => {
+    if (loggedIn) {
+      setLoading(true);
+
+      fetch("https://chinaproduct.in/api/enquiries")
+        .then((res) => res.json())
+        .then((data) => {
+          setInquiries(data.data || []);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+  }, [loggedIn]);
+
+  // 🔐 LOGIN PAGE
   if (!loggedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-8 rounded-2xl shadow-lg w-96">
 
-          <h2 className="text-2xl font-bold mb-6 text-center">
+        <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-black">
+
+          <h2 className="text-2xl font-bold mb-6 text-center text-black">
             Admin Login
           </h2>
 
           <input
             type="text"
             placeholder="Username"
-            className="w-full border p-2 mb-4 rounded"
+            className="w-full border border-gray-300 p-2 mb-4 rounded text-black"
             onChange={(e) => setUsername(e.target.value)}
           />
 
           <input
             type="password"
             placeholder="Password"
-            className="w-full border p-2 mb-4 rounded"
+            className="w-full border border-gray-300 p-2 mb-4 rounded text-black"
             onChange={(e) => setPassword(e.target.value)}
           />
 
@@ -60,28 +69,16 @@ export default function AdminPage() {
     );
   }
 
-  // 🔥 AFTER LOGIN → YOUR DASHBOARD
-  return <Dashboard />;
-}
-
-// 👇 separate dashboard component
-async function Dashboard() {
-  const res = await fetch("https://chinaproduct.in/api/enquiries", {
-    cache: "no-store",
-  });
-
-  const result = await res.json();
-  const inquiries = result.data || [];
-
+  // 🔥 DASHBOARD
   return (
-    <main className="min-h-screen bg-gray-100 text-black p-8">
+    <main className="min-h-screen bg-gray-100 text-black p-6">
 
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex justify-between items-center mb-8">
 
-          <h1 className="text-4xl font-bold text-black">
+          <h1 className="text-3xl font-bold text-black">
             Inquiry Dashboard
           </h1>
 
@@ -91,12 +88,17 @@ async function Dashboard() {
 
         </div>
 
+        {/* LOADING */}
+        {loading && (
+          <p className="mb-4 text-gray-700">Loading data...</p>
+        )}
+
         {/* TABLE */}
-        <div className="overflow-auto bg-white text-black rounded-2xl shadow-lg">
+        <div className="bg-white rounded-2xl shadow overflow-auto">
 
           <table className="w-full border-collapse text-black">
 
-            <thead className="bg-black text-white">
+            <thead className="bg-gray-900 text-white">
               <tr>
                 <th className="p-4 text-left">Customer</th>
                 <th className="p-4 text-left">Phone</th>
@@ -116,32 +118,15 @@ async function Dashboard() {
                   </td>
                 </tr>
               ) : (
-                inquiries.map((item: any, i: number) => (
+                inquiries.map((item: any, i) => (
                   <tr key={i} className="border-b hover:bg-gray-50">
 
-                    <td className="p-4 font-medium">
-                      {item.customer_name}
-                    </td>
-
-                    <td className="p-4">
-                      {item.phone}
-                    </td>
-
-                    <td className="p-4">
-                      {item.company_name}
-                    </td>
-
-                    <td className="p-4">
-                      {item.product_category}
-                    </td>
-
-                    <td className="p-4">
-                      {item.city}
-                    </td>
-
-                    <td className="p-4 max-w-xs">
-                      {item.business_description}
-                    </td>
+                    <td className="p-4">{item.customer_name}</td>
+                    <td className="p-4">{item.phone}</td>
+                    <td className="p-4">{item.company_name}</td>
+                    <td className="p-4">{item.product_category}</td>
+                    <td className="p-4">{item.city}</td>
+                    <td className="p-4 max-w-xs">{item.business_description}</td>
 
                     <td className="p-4">
                       <a
