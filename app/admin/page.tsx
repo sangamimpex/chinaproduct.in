@@ -22,7 +22,7 @@ export default function AdminPage() {
     if (loggedIn) {
       setLoading(true);
 
-      fetch("https://chinaproduct.in/api/enquiries")
+      fetch("/api/test")
         .then((res) => res.json())
         .then((data) => {
           setInquiries(data.data || []);
