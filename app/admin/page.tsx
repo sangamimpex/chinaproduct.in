@@ -1,5 +1,5 @@
 async function getInquiries() {
-  const res = await fetch("http://localhost:3000/api/test", {
+  const res = await fetch("/api/customers", {
     cache: "no-store",
   });
 
