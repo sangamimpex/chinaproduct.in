@@ -60,7 +60,8 @@ export default function Categories() {
     </span>
 
     <span className="block text-yellow-600 drop-shadow-sm hover:-translate-y-1 transition-all duration-700">
-     wide range of Products We Source
+     WIDE RANGE OF PRODUCTS
+     WE SOURCE
     </span>
 
   </h2>
