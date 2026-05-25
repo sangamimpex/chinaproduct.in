@@ -188,10 +188,6 @@ export default function AdminPage() {
                     </td>
 
                     <td className="p-4">
-                      {item.import_experience || "-"}
-                    </td>
-
-                    <td className="p-4">
                       {item.city || "-"}
                     </td>
 
