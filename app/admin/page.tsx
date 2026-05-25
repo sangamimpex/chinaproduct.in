@@ -106,20 +106,23 @@ export default function AdminPage() {
         )}
 
         {/* TABLE */}
-        <div className="bg-white rounded-2xl shadow overflow-auto">
+        <div className="bg-white rounded-2xl shadow overflow-x-auto">
 
-          <table className="w-full border-collapse">
+          <table className="min-w-[1800px] border-collapse">
 
             {/* TABLE HEADER */}
-            <thead className="bg-black text-white">
+            <thead className="bg-black text-white whitespace-nowrap">
               <tr>
+                <th className="p-4 text-left">Customer Name</th>
                 <th className="p-4 text-left">Phone</th>
+                <th className="p-4 text-left">Company Name</th>
                 <th className="p-4 text-left">GST Number</th>
                 <th className="p-4 text-left">Email</th>
                 <th className="p-4 text-left">Category</th>
+                <th className="p-4 text-left">Requirement</th>
                 <th className="p-4 text-left">Quantity</th>
                 <th className="p-4 text-left">Target Price</th>
-                <th className="p-4 text-left">Import Exp.</th>
+                <th className="p-4 text-left">Import Experience</th>
                 <th className="p-4 text-left">City</th>
                 <th className="p-4 text-left">Date</th>
                 <th className="p-4 text-left">Action</th>
@@ -132,7 +135,7 @@ export default function AdminPage() {
 
                 <tr>
                   <td
-                    colSpan={10}
+                    colSpan={13}
                     className="p-6 text-center text-gray-500"
                   >
                     No inquiries found
@@ -145,15 +148,23 @@ export default function AdminPage() {
 
                   <tr
                     key={item.id}
-                    className="border-b hover:bg-gray-50"
+                    className="border-b hover:bg-gray-50 whitespace-nowrap"
                   >
 
                     <td className="p-4">
-                      {item.customer_phone || "-"}
+                      {item.customer_name || "-"}
                     </td>
 
                     <td className="p-4">
-                      {item.company_gst_number || "-"}
+                      {item.phone || "-"}
+                    </td>
+
+                    <td className="p-4">
+                      {item.company_name || "-"}
+                    </td>
+
+                    <td className="p-4">
+                      {item.gst_number || "-"}
                     </td>
 
                     <td className="p-4">
@@ -164,12 +175,16 @@ export default function AdminPage() {
                       {item.product_category || "-"}
                     </td>
 
-                    <td className="p-4">
-                      {item.business_quantity || "-"}
+                    <td className="p-4 max-w-xs whitespace-normal">
+                      {item.business_description || "-"}
                     </td>
 
                     <td className="p-4">
-                      {item.target_price || "-"}
+                      {item.quantity_required || "-"}
+                    </td>
+
+                    <td className="p-4">
+                      ₹ {item.target_price || "-"}
                     </td>
 
                     <td className="p-4">
@@ -188,7 +203,7 @@ export default function AdminPage() {
 
                     <td className="p-4">
                       <a
-                        href={`https://wa.me/${item.customer_phone}`}
+                        href={`https://wa.me/${item.phone}`}
                         target="_blank"
                         className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
                       >
