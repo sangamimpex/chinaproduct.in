@@ -24,7 +24,7 @@ export default function AdminPage() {
 
       fetch("/api/test", {
   headers: {
-    Authorization: "Bearer sangam123secure",
+    Authorization: "Bearer 9419166095",
   },
 })
         .then((res) => res.json())
