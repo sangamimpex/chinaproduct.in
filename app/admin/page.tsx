@@ -22,9 +22,14 @@ export default function AdminPage() {
     if (loggedIn) {
       setLoading(true);
 
-      fetch("/api/test")
+      fetch("/api/test", {
+  headers: {
+    Authorization: "Bearer sangam123secure",
+  },
+})
         .then((res) => res.json())
         .then((data) => {
+          console.log("API DATA:", data); // 🔥 debug
           setInquiries(data.data || []);
           setLoading(false);
         })
@@ -36,9 +41,7 @@ export default function AdminPage() {
   if (!loggedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-
         <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-black">
-
           <h2 className="text-2xl font-bold mb-6 text-center text-black">
             Admin Login
           </h2>
@@ -63,7 +66,6 @@ export default function AdminPage() {
           >
             Login
           </button>
-
         </div>
       </div>
     );
@@ -72,12 +74,10 @@ export default function AdminPage() {
   // 🔥 DASHBOARD
   return (
     <main className="min-h-screen bg-gray-100 text-black p-6">
-
       <div className="max-w-7xl mx-auto">
 
         {/* HEADER */}
         <div className="flex justify-between items-center mb-8">
-
           <h1 className="text-3xl font-bold text-black">
             Inquiry Dashboard
           </h1>
@@ -85,7 +85,6 @@ export default function AdminPage() {
           <div className="bg-black text-white px-4 py-2 rounded-xl">
             Total Leads: {inquiries.length}
           </div>
-
         </div>
 
         {/* LOADING */}
@@ -95,7 +94,6 @@ export default function AdminPage() {
 
         {/* TABLE */}
         <div className="bg-white rounded-2xl shadow overflow-auto">
-
           <table className="w-full border-collapse text-black">
 
             <thead className="bg-gray-900 text-white">
@@ -118,15 +116,17 @@ export default function AdminPage() {
                   </td>
                 </tr>
               ) : (
-                inquiries.map((item: any, i) => (
-                  <tr key={i} className="border-b hover:bg-gray-50">
+                inquiries.map((item: any) => (
+                  <tr key={item.id} className="border-b hover:bg-gray-50">
 
-                    <td className="p-4">{item.customer_name}</td>
-                    <td className="p-4">{item.phone}</td>
-                    <td className="p-4">{item.company_name}</td>
-                    <td className="p-4">{item.product_category}</td>
-                    <td className="p-4">{item.city}</td>
-                    <td className="p-4 max-w-xs">{item.business_description}</td>
+                    <td className="p-4">{item.customer_name || "-"}</td>
+                    <td className="p-4">{item.phone || "-"}</td>
+                    <td className="p-4">{item.company_name || "-"}</td>
+                    <td className="p-4">{item.product_category || "-"}</td>
+                    <td className="p-4">{item.city || "-"}</td>
+                    <td className="p-4 max-w-xs">
+                      {item.business_description || "-"}
+                    </td>
 
                     <td className="p-4">
                       <a
@@ -144,11 +144,9 @@ export default function AdminPage() {
             </tbody>
 
           </table>
-
         </div>
 
       </div>
-
     </main>
   );
 }

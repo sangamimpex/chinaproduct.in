@@ -1,4 +1,13 @@
 import { supabase } from "@/lib/supabase";
+function isAuthorized(req) {
+  const authHeader = req.headers.get("authorization");
+
+  if (!authHeader) return false;
+
+  const token = authHeader.split(" ")[1];
+
+  return token === process.env.ADMIN_TOKEN;
+}
 
 export async function POST(req) {
   try {
@@ -22,7 +31,16 @@ export async function POST(req) {
   }
 }
 
-export async function GET() {
+export async function GET(req) {
+
+  // 🔐 CHECK LOGIN TOKEN
+  if (!isAuthorized(req)) {
+    return Response.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   const { data, error } = await supabase
     .from("inquiries")
     .select("*");
